@@ -43,18 +43,16 @@
 
             // N & +Q
             productsOfBasePowers = (pow, bases) => { // (N, [...N])
-                var res = [{n:1, d:1}];
-                
                 var lastBase = bases.pop();
-                for (let bas of bases) { // bases
+                
+                var res = [{n: lastBase, d: 1}];
+                // base == lastBase
+                for (let p = lastBase; p <= pow; p *= lastBase) res.push({n:p, d:1});
+                // base == …bases
+                for (let bas of bases) {
                     for (let prod of res) {
                         for (let p = {...prod}; p.n <= pow; p.n *= bas) res.push(p);
                         for (let p = {...prod}; p.d <= pow; p.d *= bas) res.push(p);
-                    }
-                }
-                if (true) { // lastBase
-                    for (let prod of res) {
-                        for (let p = {...prod}; p.n <= pow; p.n *= lastBase) res.push(p);
                     }
                 }
                 
