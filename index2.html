@@ -23,7 +23,7 @@
         "use strict";
         // Натуральное число ('N'): n
         // Положительное рациональное число ('+Q'): {n: n, d: d}
-        // Факторизация N или +Q ('F'): {2 => 4, 3 => -1, 5 => -1, ...}
+        // Факторизация N или +Q ('F'): {2 => 4, 3 => -1, 5 => -1, …}
 
         var CL = console.log,
             DQS = x => document.querySelector(x),
@@ -42,22 +42,27 @@
             },
 
             // N & +Q
-            basePowers = (pow, bas) => {  // (N, N) => [1/1, bas/1, bas^2/1, bas^3/1, ... <= pow]
-                var res = [];
-                for (let p = bas; p <= pow; p *= bas) res.push({n:p, d:1});
-                return res;
-            },
-            productsOfBasePowers = (pow, prods2BeAsgnd, ...bases) => {
-                var res = [...prods2BeAsgnd];
-                for (let bas of bases) {
+            productsOfBasePowers = (pow, bases) => { // (N, [...N])
+                var res = [{n:1, d:1}];
+                
+                var lastBase = bases.pop();
+                for (let bas of bases) { // bases
                     for (let prod of res) {
                         for (let p = {...prod}; p.n <= pow; p.n *= bas) res.push(p);
                         for (let p = {...prod}; p.d <= pow; p.d *= bas) res.push(p);
                     }
                 }
+                if (true) { // lastBase
+                    for (let prod of res) {
+                        for (let p = {...prod}; p.n <= pow; p.n *= lastBase) res.push(p);
+                    }
+                }
+                
                 return res;
             },
-            q_less_q = (Q0, Q1) => Q0.n*Q1.d < Q1.n*Q0.d,   // Q0.n/Q0.d < Q1.n/Q1.d
+            
+            // +Q
+            q_less_q = (Q0, Q1) => Q0.n * Q1.d < Q1.n * Q0.d,   // Q0.n/Q0.d < Q1.n/Q1.d
 
             // +Q & C
             C_Q = C => {
